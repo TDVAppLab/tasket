@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-type Forecast = {
+interface Forecast {
   date: Date;
   temperatureC: number;
   temperatureF: number;
   summary: string;
-};
+}
 
 export const WeatherForecast = () => {
     
