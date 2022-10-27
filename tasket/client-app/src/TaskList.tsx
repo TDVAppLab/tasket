@@ -45,7 +45,7 @@ export const TaskList = () => {
                     <td>{index+1}</td>
                     <td><input type="checkbox" defaultChecked={task.is_finish} disabled /></td>
                     <td>{task.title}</td>
-                    <td>{task.end_date_scheduled?.toString()}</td>
+                    <td>{task.end_date_scheduled && (new Date(task.end_date_scheduled).toDateString())}</td>
                   </tr>
                 ))}
               </tbody>
