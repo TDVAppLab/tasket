@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Button, Table } from 'react-bootstrap';
 
 interface Task {
   id_task: string;
@@ -7,7 +8,14 @@ interface Task {
   end_date_scheduled: Date;
 }
 
-export const TaskList = () => {
+
+interface Props {
+  selectedId_task: string;
+  setSelectedId_task: React.Dispatch<React.SetStateAction<string>>;
+}
+
+
+export const TaskList = ({selectedId_task, setSelectedId_task}: Props) => {
     
     
     const [loading, setLoading] = useState(true);
@@ -30,7 +38,7 @@ export const TaskList = () => {
         <div>
             <h1 id="tabelLabel">Task List</h1>
             <p>This component demonstrates fetching data from the server.</p>
-            <table className="table table-striped" aria-labelledby="tabelLabel">
+            <Table >
               <thead>
                 <tr>
                   <th>No.</th>
@@ -41,7 +49,10 @@ export const TaskList = () => {
               </thead>
               <tbody>
                 {tasks && tasks.map((task, index) => (
-                  <tr key={task.id_task}>
+                  <tr 
+                    key={task.id_task} onClick={()=>{setSelectedId_task(task.id_task)}}  
+                    className={ selectedId_task === task.id_task ? "table-info" :  ""}                  
+                  >
                     <td>{index+1}</td>
                     <td><input type="checkbox" defaultChecked={task.is_finish} disabled /></td>
                     <td>{task.title}</td>
@@ -49,7 +60,7 @@ export const TaskList = () => {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </Table>
         </div>
     )
 }
