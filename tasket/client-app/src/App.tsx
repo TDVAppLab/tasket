@@ -1,13 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { WeatherForecast } from './WeatherForecast';
-import { TaskList } from './TaskList';
+import { TaskOperationMain } from './TaskOperationMain';
 
 function App() {
   return (
     <div>
-       <TaskList />
+      <TaskOperationMain />
      </div>
   );
 }
