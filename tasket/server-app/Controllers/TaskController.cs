@@ -23,5 +23,10 @@ namespace server_app.Controllers
         {
             return await _context.t_tasks.ToListAsync();
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<t_task>> Details(Guid id)
+        {
+            return await _context.t_tasks.FindAsync(id);
+        }
     }
 }

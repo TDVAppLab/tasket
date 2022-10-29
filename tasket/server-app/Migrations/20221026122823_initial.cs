@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace server_app.Migrations
