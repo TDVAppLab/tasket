@@ -28,5 +28,19 @@ namespace server_app.Controllers
         {
             return await _context.t_tasks.FindAsync(id);
         }
+        [HttpPost("update")]
+        public async Task<ActionResult<t_task>> Update([FromBody] t_task task)
+        {
+            var temp = await _context.t_tasks.FindAsync(task.id_task);
+            temp.title = task.title;
+            temp.is_finish = task.is_finish;
+            temp.description = task.description;
+            temp.end_date_scheduled = task.end_date_scheduled;
+            temp.end_date_actual = task.end_date_actual;
+
+            await _context.SaveChangesAsync();
+
+            return await _context.t_tasks.FindAsync(task.id_task);
+        }
     }
 }
