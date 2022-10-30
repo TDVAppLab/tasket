@@ -60,5 +60,18 @@ namespace server_app.Controllers
 
             return await _context.t_tasks.FindAsync(task.id_task);
         }
+        [HttpPost("delete/{id}")]
+        public async Task<ActionResult<bool>> Delete(Guid id)
+        {
+            var task = await _context.t_tasks.FindAsync(id);
+
+            if(task == null) return null;
+
+            _context.Remove(task);
+
+            var result = await _context.SaveChangesAsync()>0;
+
+            return result;
+        }
     }
 }

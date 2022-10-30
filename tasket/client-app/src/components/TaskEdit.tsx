@@ -21,9 +21,10 @@ interface Task {
 interface Props {
     isModeAddnew: boolean;
     id_task: string;
+    setSelectedId_task: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const TaskEdit = ({isModeAddnew, id_task}: Props) => {    
+export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => {    
     
     const [task, setTask] = useState<Task>();
 
@@ -45,11 +46,9 @@ export const TaskEdit = ({isModeAddnew, id_task}: Props) => {
     const updateTaskDetails = async (value : Task) => {
 
         if(value.id_task===""){
-            //const newTask = {...value};
             const newTask = value;
             newTask.id_task=v4();
 
-            console.log("press create")
             const response = await fetch("https://localhost:5001/task/create", { 
                 method: "POST",
                 headers: {
@@ -72,6 +71,20 @@ export const TaskEdit = ({isModeAddnew, id_task}: Props) => {
             setTask(data);
         }
     };
+
+
+    const deleteTask = async (value : Task) => {
+
+        if(value.id_task!==""){
+
+            const response = await fetch(`https://localhost:5001/task/delete/${value.id_task}`, { 
+                method: "POST",
+            });
+            const data = await response.json();
+            setSelectedId_task("");
+
+        }
+    };
     
     const validationSchema = Yup.object({
         title: Yup.string().required(),
@@ -79,6 +92,10 @@ export const TaskEdit = ({isModeAddnew, id_task}: Props) => {
         description: Yup.string().nullable(),
         end_date_scheduled: Yup.date().nullable(),
         end_date_actual: Yup.date().nullable(),
+    });
+    
+    const validationSchemaDel = Yup.object({
+        id_task: Yup.string().required(),
     });
 
 
@@ -131,7 +148,22 @@ export const TaskEdit = ({isModeAddnew, id_task}: Props) => {
                 )}
 
                 </Formik>
-
+                {
+                !isModeAddnew &&
+                <Formik
+                validationSchema={validationSchemaDel}
+                enableReinitialize 
+                initialValues={task} 
+                onSubmit={values => deleteTask(values)}>
+                {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                    <Form className="ui form" onSubmit = {handleSubmit} autoComplete='off'>                        
+                        <button disabled={!isValid || isSubmitting} type = 'submit' className='btn btn-danger'>
+                            {isSubmitting ? "Processing" : "Delete"}
+                        </button>
+                    </Form>
+                )}
+                </Formik>
+                }
             </div>
 
             }

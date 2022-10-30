@@ -22,7 +22,7 @@ export const TaskOperationMain = () => {
                 <Col>
                     {
                         (isModeAddnew || selectedId_task !== "") &&
-                            <TaskEdit isModeAddnew={isModeAddnew} id_task={selectedId_task} />
+                            <TaskEdit isModeAddnew={isModeAddnew} id_task={selectedId_task} setSelectedId_task={setSelectedId_task} />
                     }
                 </Col>
             </Row>
