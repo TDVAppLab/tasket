@@ -6,27 +6,33 @@ import CheckBoxGeneral from "../app/common/CheckBoxGeneral";
 import DateInputGeneral from "../app/common/DateInputGeneral";
 import TextAreaGeneral from "../app/common/TextAreaGeneral";
 import TextInputGeneral from "../app/common/TextInputGeneral";
+import {v4} from 'uuid';
 
 interface Task {
     id_task: string;
     title: string;
     is_finish: boolean;
     description: string;
-    end_date_scheduled: Date;
-    end_date_actual: Date;
+    end_date_scheduled: Date | null;
+    end_date_actual: Date | null;
   }
 
 
 interface Props {
-    id_task: string
+    isModeAddnew: boolean;
+    id_task: string;
 }
 
-export const TaskEdit = ({id_task}: Props) => {    
+export const TaskEdit = ({isModeAddnew, id_task}: Props) => {    
     
     const [task, setTask] = useState<Task>();
 
     useEffect(() => {
-        id_task !== "" && loadTaskDetails();
+        if(id_task !== ""){
+            loadTaskDetails();
+        } else {
+            setTask({id_task : "", title : "", is_finish: false, description:"", end_date_scheduled : null, end_date_actual : null})
+        }
     }, [id_task]);
   
     const loadTaskDetails = async () => {
@@ -37,15 +43,34 @@ export const TaskEdit = ({id_task}: Props) => {
 
 
     const updateTaskDetails = async (value : Task) => {
-        const response = await fetch("https://localhost:5001/task/update", { 
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(value)  
-        });
-        const data = await response.json();
-        setTask(data);
+
+        if(value.id_task===""){
+            //const newTask = {...value};
+            const newTask = value;
+            newTask.id_task=v4();
+
+            console.log("press create")
+            const response = await fetch("https://localhost:5001/task/create", { 
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newTask)  
+            });
+            const data = await response.json();
+            setTask(data);
+
+        } else {
+            const response = await fetch("https://localhost:5001/task/update", { 
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(value)  
+            });
+            const data = await response.json();
+            setTask(data);
+        }
     };
     
     const validationSchema = Yup.object({
@@ -60,7 +85,12 @@ export const TaskEdit = ({id_task}: Props) => {
 
     return (
         <div>
-            <h3>Task Detail : {task && task.title}</h3>
+            {
+                isModeAddnew ?
+                    <h3>Add New Task</h3>
+                    :
+                    <h3>Task Detail : {task?.title}</h3>
+            }
             { task &&
             <div>
                 <Formik
@@ -78,7 +108,7 @@ export const TaskEdit = ({id_task}: Props) => {
                         <hr />
                         
                         <Row>
-                            <Col ><TextAreaGeneral label='Short Description' placeholder='Description' name='short_description' rows={3}   /></Col>
+                            <Col ><TextAreaGeneral label='Description' placeholder='Description' name='description' rows={3}   /></Col>
                         </Row>
                         
                         <Row>

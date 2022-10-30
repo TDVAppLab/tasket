@@ -11,11 +11,12 @@ interface Task {
 
 interface Props {
   selectedId_task: string;
+  setIsModeAddnew: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedId_task: React.Dispatch<React.SetStateAction<string>>;
 }
 
 
-export const TaskList = ({selectedId_task, setSelectedId_task}: Props) => {
+export const TaskList = ({setIsModeAddnew, selectedId_task, setSelectedId_task}: Props) => {
     
     
     const [loading, setLoading] = useState(true);
@@ -50,7 +51,7 @@ export const TaskList = ({selectedId_task, setSelectedId_task}: Props) => {
               <tbody>
                 {tasks && tasks.map((task, index) => (
                   <tr 
-                    key={task.id_task} onClick={()=>{setSelectedId_task(task.id_task)}}  
+                    key={task.id_task} onClick={()=>{setIsModeAddnew(false); setSelectedId_task(task.id_task);}}  
                     className={ selectedId_task === task.id_task ? "table-info" :  ""}                  
                   >
                     <td>{index+1}</td>
