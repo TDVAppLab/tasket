@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
+import api from '../app/api/api';
+import { Task } from '../app/models/Task';
 
-interface Task {
-  id_task: string;
-  title: string;
-  is_finish: boolean;
-  end_date_scheduled: Date;
-}
 
 
 interface Props {
@@ -27,8 +23,7 @@ export const TaskList = ({setIsModeAddnew, selectedId_task, setSelectedId_task}:
     }, []);
   
     const populateWeatherData = async () => {
-        const response = await fetch('https://localhost:5001/task');
-        const data = await response.json();
+        const data = await api.Tasks.index();
         setTasks(data);
         setLoading(false);
     };

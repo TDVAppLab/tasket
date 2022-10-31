@@ -7,15 +7,9 @@ import DateInputGeneral from "../app/common/DateInputGeneral";
 import TextAreaGeneral from "../app/common/TextAreaGeneral";
 import TextInputGeneral from "../app/common/TextInputGeneral";
 import {v4} from 'uuid';
+import api from "../app/api/api";
+import { Task } from "../app/models/Task";
 
-interface Task {
-    id_task: string;
-    title: string;
-    is_finish: boolean;
-    description: string;
-    end_date_scheduled: Date | null;
-    end_date_actual: Date | null;
-  }
 
 
 interface Props {
@@ -37,8 +31,7 @@ export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => 
     }, [id_task]);
   
     const loadTaskDetails = async () => {
-        const response = await fetch(`https://localhost:5001/task/${id_task}`);
-        const data = await response.json();
+        const data = await api.Tasks.details(id_task);
         setTask(data);
     };
 
@@ -48,26 +41,11 @@ export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => 
         if(value.id_task===""){
             const newTask = value;
             newTask.id_task=v4();
-
-            const response = await fetch("https://localhost:5001/task/create", { 
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newTask)  
-            });
-            const data = await response.json();
+            const data = await api.Tasks.create(newTask);
             setTask(data);
 
         } else {
-            const response = await fetch("https://localhost:5001/task/update", { 
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(value)  
-            });
-            const data = await response.json();
+            const data = await api.Tasks.update(value);
             setTask(data);
         }
     };
@@ -76,13 +54,8 @@ export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => 
     const deleteTask = async (value : Task) => {
 
         if(value.id_task!==""){
-
-            const response = await fetch(`https://localhost:5001/task/delete/${value.id_task}`, { 
-                method: "POST",
-            });
-            const data = await response.json();
+            const data = await api.Tasks.delete(value.id_task);
             setSelectedId_task("");
-
         }
     };
     
