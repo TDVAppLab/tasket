@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,12 @@ namespace server_app
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "server_app", Version = "v1" });
             });
 
+             services.AddDefaultIdentity<ApplicationUser>(
+                 options => {
+                                options.SignIn.RequireConfirmedAccount = false;
+                             }
+                 )
+                 .AddEntityFrameworkStores<DataContext>();
             
            services.AddCors(o => o.AddPolicy(MyAllowSpecificOrigins, builder =>
            {
