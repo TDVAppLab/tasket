@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server_app.Models.EDM;
 using server_app.Models.DTO;
+using server_app.Services;
 
 namespace server_app.Controllers
 {
@@ -17,10 +18,13 @@ namespace server_app.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly  SignInManager<ApplicationUser> _signinManager;
+        private readonly TokenService _tokenService;
         public AccountController(UserManager<ApplicationUser> userManager
             ,SignInManager<ApplicationUser> signinManager
+            ,TokenService tokenService
              )
         {
+            _tokenService = tokenService;
             _signinManager = signinManager;
             _userManager = userManager;
         }
@@ -76,6 +80,7 @@ namespace server_app.Controllers
         {
             return new UserModel
             {
+                    Token = _tokenService.CreateToken(user),
                     Username = user.UserName
             };
         }

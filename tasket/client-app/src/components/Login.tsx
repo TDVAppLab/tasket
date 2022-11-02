@@ -9,6 +9,7 @@ const Login = (
     const [password, setPassword] = useState('');
     const [resultcode, setResultcode] = useState(0);
     const [resultTitle, setResultTitle] = useState('');
+    const [token, setToken] = useState('');
 
 
 
@@ -30,6 +31,7 @@ const Login = (
         setResultTitle(content.title);
         if(status==200){
             setName(content.username);
+            setToken(content.token);
 
         }
 
@@ -79,6 +81,10 @@ const Login = (
 
             <li>
                 {resultcode!=0 && <>msg:{resultTitle}</>}
+            </li>
+
+            <li>
+                {resultcode!=0 && <p>token : {token}</p>}
             </li>
         </ul>
         </>
