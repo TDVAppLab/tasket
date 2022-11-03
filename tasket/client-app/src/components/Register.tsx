@@ -1,83 +1,63 @@
-import React, { SyntheticEvent, useState } from 'react';
+import { ErrorMessage, Formik } from 'formik';
+import React from 'react';
+import { Form, ListGroup } from 'react-bootstrap';
+import TextInputGeneral from '../app/common/TextInputGeneral';
+import * as Yup from 'yup';
+import api from '../app/api/api';
 
 const Register = () => {
     
-    const [username, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [resultcode, setResultcode] = useState(0);
-    const [resultTitle, setResultTitle] = useState('');
-
-    const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
-        const response = await fetch('https://localhost:5001/account/register',
-        {
-            method : 'POST',
-            headers:{'Content-Type' : 'application/json'},
-            body: JSON.stringify({
-                email,
-                username,
-                password
-            })
-        });
-        const content = await response.json();
-        const status = await response.status
-
-        setResultcode(status);
-        setResultTitle(content.title);
-    }
-
-    
     return (
         <>
-        <form onSubmit={submit}>
-            <h2>Register</h2>
-
-            <ul>
-                <li>
-                    <label>Name</label>
-                    <input placeholder="Name" required
-                        onChange = {e => setName(e.target.value)}            
-                    />
-                </li>
-
-                <li>
-                    <label>email</label>
-                    <input type="email" placeholder="name@example.com" required 
-                        onChange = {e => setEmail(e.target.value)}            
-                    />
-                </li>
-
-                <li>                    
-                    <label>password</label>
-                    <input type="password" placeholder="Password" required 
-                        onChange = {e => setPassword(e.target.value)}            
-                    />
-                </li>
-            </ul>
-
-            <button type="submit">Register</button>
-
-        </form>
-        
-        <h2>Response</h2>
-
-        <ul>
-            <li>
-                {resultcode!=0 && <>{resultcode==200 ? <>Register Success</> : <>Register Fail</>}</>}
-            </li>
-
-            <li>
-                {resultcode!=0 && <>Code:{resultcode}</>}
-            </li>
-
-            <li>
-                {resultcode!=0 && <>msg:{resultTitle}</>}
-            </li>
-        </ul>
+        <Formik
+            initialValues={{username: '', email:'', password: '', error: null}}
+            onSubmit={(values, {setErrors}) => 
+            api.Account.register(values).catch(error => 
+                setErrors({error}))
+           }
+            validationSchema={Yup.object({
+                username: Yup.string().required(),
+                email: Yup.string().required().email(),
+                password: Yup.string().required(),
+            })}
+            >
+                {({handleSubmit, isSubmitting, errors, isValid, dirty}) =>(
+                    <Form className="ui form error" onSubmit={handleSubmit} autoComplete='off'>
+                        <h3>Sigh up to Tasket</h3>
+                        <TextInputGeneral name='username' placeholder="User Name" />
+                        <TextInputGeneral name='email' placeholder="Email" />
+                        <TextInputGeneral name='password' placeholder="Password" type="password" />
+                        <ErrorMessage 
+                            name='error' render={() => 
+                            <ValidationErrors errors = {errors.error} />}
+                        />
+                        <button disabled={!isValid || !dirty || isSubmitting} type = 'submit' className="btn btn-primary">Submit</button>
+                    </Form>
+                )}
+            </Formik>
         </>
     );
 
 }
 
 export default Register;
+
+
+
+
+interface Props {
+    errors: any;
+}
+function ValidationErrors({errors}: Props){
+    return (
+    <>
+        {errors && (
+        <ListGroup>
+            {errors.map((err: any, i: any) => (
+                <ListGroup.Item key = {i} >{err}</ListGroup.Item>
+            ))}
+            </ListGroup>
+        )}
+    </>
+    )
+}

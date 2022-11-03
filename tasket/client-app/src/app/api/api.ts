@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { UserFormValues, UserInfo } from "../models/Account";
 import { Task } from "../models/Task";
 
 axios.defaults.baseURL = "https://localhost:5001"; 
@@ -10,6 +11,11 @@ axios.interceptors.request.use(config => {
     return config;
 })
 
+const Account = {
+    login: (user: UserFormValues) => axios.post<UserInfo>(`/account/login`, user).then((response: AxiosResponse<UserInfo>)=>response.data),
+    register: (user: UserFormValues) => axios.post<UserInfo>(`/account/register`, user).then((response: AxiosResponse<UserInfo>)=>response.data),
+}
+
 const Tasks = {
     index: () => axios.get<Task[]>(`/task`).then((response: AxiosResponse<Task[]>)=>response.data),
     details: (id:string) => axios.get<Task>(`/task/${id}`).then((response: AxiosResponse<Task>)=>response.data),
@@ -19,7 +25,9 @@ const Tasks = {
 }
 
 
+
 const api = {
+    Account,
     Tasks,
 }
 

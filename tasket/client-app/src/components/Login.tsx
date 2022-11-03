@@ -1,94 +1,44 @@
-import React, { SyntheticEvent, useState } from 'react';
+import { ErrorMessage,  Formik } from 'formik';
+import React from 'react';
+import { Form } from 'react-bootstrap';
+import * as Yup from 'yup';
+import api from '../app/api/api';
+import TextInputGeneral from '../app/common/TextInputGeneral';
 
 const Login = (
     ) => 
 {
     
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [resultcode, setResultcode] = useState(0);
-    const [resultTitle, setResultTitle] = useState('');
-    const [token, setToken] = useState('');
-
-
-
-    const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
-        const response = await fetch('https://localhost:5001/account/login',
-        {
-            method : 'POST',
-            headers:{'Content-Type' : 'application/json'},
-            body: JSON.stringify({
-                email,
-                password
-            })
-        });
-        const content = await response.json();
-        const status = await response.status
-
-        setResultcode(status);
-        setResultTitle(content.title);
-        if(status==200){
-            setName(content.username);
-            setToken(content.token);
-            
-            window.localStorage.setItem('tasket_jwt_token', content.token);
-
-        }
-
-    }
-
-    
     return (
         <>
-        <form onSubmit={submit}>
-            <h2>Sign in</h2>
 
-            <ul>
-
-                <li>
-                    <label>email</label>
-                    <input type="email" placeholder="name@example.com" required 
-                        onChange = {e => setEmail(e.target.value)}            
-                    />
-                </li>
-
-                <li>                    
-                    <label>password</label>
-                    <input type="password" placeholder="Password" required 
-                        onChange = {e => setPassword(e.target.value)}            
-                    />
-                </li>
-            </ul>
-
-            <button type="submit">Sign in</button>
-
-        </form>
-        
-        <h2>Response</h2>
-
-        <ul>
-            <li>
-                {resultcode!=0 && <>{resultcode==200 ? <>Login Success</> : <>Login Fail</>}</>}
-            </li>
-
-            <li>
-                {resultcode==200 && <>Name:{name}</>}
-            </li>
-
-            <li>
-                {resultcode!=0 && <>Code:{resultcode}</>}
-            </li>
-
-            <li>
-                {resultcode!=0 && <>msg:{resultTitle}</>}
-            </li>
-
-            <li>
-                {resultcode!=0 && <p>token : {token}</p>}
-            </li>
-        </ul>
+        <Formik
+            initialValues={{email:'', password: '', error: null}}
+            onSubmit={async (values, {setErrors}) => {
+                const content = await api.Account.login(values).catch(error => 
+                    setErrors({error:'Invalid email or password'}));
+                    content?.token && window.localStorage.setItem('tasket_jwt_token', content.token);
+                }
+            }
+            validationSchema={Yup.object({
+                email: Yup.string().required().email(),
+                password: Yup.string().required(),
+            })}
+            >
+                {({handleSubmit, isSubmitting, errors, isValid, dirty}) =>(
+                    <Form className="ui form" onSubmit={handleSubmit} autoComplete='off'>
+                        <h3>Login</h3>
+                        <TextInputGeneral name='email' placeholder="Email" />
+                        <TextInputGeneral name='password' placeholder="Password" type="password" />
+                        <ErrorMessage 
+                            name='error' render={() => 
+                                <Form.Label style = {{marginBottom:10}} basic color='red' >{errors.error}</Form.Label>
+                        }
+                        />
+                        <button disabled={!isValid || !dirty || isSubmitting} type = 'submit' className="btn btn-primary">Login</button>
+                    </Form>
+                )}
+            </Formik>
         </>
     );
 
