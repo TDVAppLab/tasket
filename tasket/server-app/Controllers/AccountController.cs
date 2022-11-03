@@ -84,5 +84,13 @@ namespace server_app.Controllers
                     Username = user.UserName
             };
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<UserModel>> GetCurrentUser()
+        {
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            return CreateUserObject(user);
+        }
     }
 }

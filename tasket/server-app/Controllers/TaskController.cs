@@ -10,6 +10,7 @@ using server_app.Models.EDM;
 
 namespace server_app.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class TaskController : ControllerBase
@@ -24,7 +25,6 @@ namespace server_app.Controllers
         {
             return await _context.t_tasks.ToListAsync();
         }
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<t_task>> Details(Guid id)
         {

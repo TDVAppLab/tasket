@@ -12,6 +12,7 @@ axios.interceptors.request.use(config => {
 })
 
 const Account = {
+    current: () => axios.get<UserInfo>(`/account`).then((response: AxiosResponse<UserInfo>)=>response.data),
     login: (user: UserFormValues) => axios.post<UserInfo>(`/account/login`, user).then((response: AxiosResponse<UserInfo>)=>response.data),
     register: (user: UserFormValues) => axios.post<UserInfo>(`/account/register`, user).then((response: AxiosResponse<UserInfo>)=>response.data),
 }

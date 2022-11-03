@@ -4,8 +4,17 @@ import { Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import api from '../app/api/api';
 import TextInputGeneral from '../app/common/TextInputGeneral';
+import { UserInfo } from '../app/models/Account';
+
+
+
+interface Props {
+    setUserInfo: React.Dispatch<React.SetStateAction<UserInfo>>;
+}
+
 
 const Login = (
+    {setUserInfo}: Props
     ) => 
 {
     
@@ -17,7 +26,10 @@ const Login = (
             onSubmit={async (values, {setErrors}) => {
                 const content = await api.Account.login(values).catch(error => 
                     setErrors({error:'Invalid email or password'}));
-                    content?.token && window.localStorage.setItem('tasket_jwt_token', content.token);
+                    if(content){
+                        window.localStorage.setItem('tasket_jwt_token', content.token);
+                        setUserInfo(content);
+                    }
                 }
             }
             validationSchema={Yup.object({
