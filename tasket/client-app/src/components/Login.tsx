@@ -32,6 +32,8 @@ const Login = (
         if(status==200){
             setName(content.username);
             setToken(content.token);
+            
+            window.localStorage.setItem('tasket_jwt_token', content.token);
 
         }
 

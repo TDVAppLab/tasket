@@ -4,6 +4,12 @@ import { Task } from "../models/Task";
 axios.defaults.baseURL = "https://localhost:5001"; 
 
 
+axios.interceptors.request.use(config => {
+    const token = window.localStorage.getItem('tasket_jwt_token');
+    if(token) config.headers!.Authorization = `Bearer ${token}`
+    return config;
+})
+
 const Tasks = {
     index: () => axios.get<Task[]>(`/task`).then((response: AxiosResponse<Task[]>)=>response.data),
     details: (id:string) => axios.get<Task>(`/task/${id}`).then((response: AxiosResponse<Task>)=>response.data),
