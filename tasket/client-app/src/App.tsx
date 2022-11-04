@@ -5,6 +5,7 @@ import { UserInfo } from './app/models/Account';
 import Login from './components/Login';
 import Register  from './components/Register';
 import { TaskOperationMain } from './components/TaskOperationMain';
+import { NavBar } from './NavBar';
 
 function App() {
 
@@ -26,17 +27,17 @@ function App() {
 
   
   return (
-    <div>
+    <>
+      <NavBar userInfo={userInfo} />
       {userInfo.username==='' ? 
-      <>
-        <Login setUserInfo={setUserInfo}/>
-        <Register /> 
-      </>
-      :
-      <TaskOperationMain />
-  }
-      
-     </div>
+        <>
+          <Login setUserInfo={setUserInfo}/>
+          <Register /> 
+        </>
+        :
+        <TaskOperationMain />
+      }      
+     </>
   );
 }
 export default App;
