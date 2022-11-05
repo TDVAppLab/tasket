@@ -29,7 +29,7 @@ function App() {
   
   return (
     <>
-      <NavBar userInfo={userInfo} setUserInfo={setUserInfo} />
+      <NavBar userInfo={userInfo} />
       {userInfo.username==='' && 
         <>
           <Login setUserInfo={setUserInfo}/>
