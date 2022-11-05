@@ -41,7 +41,7 @@ const Login = (
                 password: Yup.string().required(),
             })}
             >
-                {({handleSubmit, isSubmitting, errors, isValid, dirty}) =>(
+                {({handleSubmit, isSubmitting, errors, isValid}) =>(
                     <Form className="ui form" onSubmit={handleSubmit} autoComplete='off'>
                         <h3>Login</h3>
                         <TextInputGeneral name='email' placeholder="Email" />
@@ -51,7 +51,7 @@ const Login = (
                                 <Form.Label style = {{marginBottom:10}} basic color='red' >{errors.error}</Form.Label>
                         }
                         />
-                        <button disabled={!isValid || !dirty || isSubmitting} type = 'submit' className="btn btn-primary">Login</button>
+                        <button disabled={!isValid || isSubmitting} type = 'submit' className="btn btn-primary">Login</button>
                     </Form>
                 )}
             </Formik>
