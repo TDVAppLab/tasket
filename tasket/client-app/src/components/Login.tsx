@@ -1,6 +1,7 @@
 import { ErrorMessage,  Formik } from 'formik';
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import api from '../app/api/api';
 import TextInputGeneral from '../app/common/TextInputGeneral';
@@ -18,6 +19,8 @@ const Login = (
     ) => 
 {
     
+    const navigate = useNavigate();
+    
     return (
         <>
 
@@ -29,6 +32,7 @@ const Login = (
                     if(content){
                         window.localStorage.setItem('tasket_jwt_token', content.token);
                         setUserInfo(content);
+                        navigate(`/task`);
                     }
                 }
             }

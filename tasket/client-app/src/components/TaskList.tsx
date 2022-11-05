@@ -49,7 +49,7 @@ export const TaskList = ({setIsModeAddnew, selectedId_task, setSelectedId_task}:
                 {tasks && tasks.map((task, index) => (
                   <tr 
                     key={task.id_task} onClick={()=>{setIsModeAddnew(false); setSelectedId_task(task.id_task);
-                      navigate(`/taskedit/${task.id_task}`);
+                      navigate(`/task/${task.id_task}`);
                     }}  
                     className={ selectedId_task === task.id_task ? "table-info" :  ""}                  
                   >
