@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import api from './app/api/api';
 import { UserInfo } from './app/models/Account';
@@ -28,15 +29,19 @@ function App() {
   
   return (
     <>
-      <NavBar userInfo={userInfo} />
-      {userInfo.username==='' ? 
+      <NavBar userInfo={userInfo} setUserInfo={setUserInfo} />
+      {userInfo.username==='' && 
         <>
           <Login setUserInfo={setUserInfo}/>
           <Register /> 
         </>
-        :
-        <TaskOperationMain />
       }      
+      <Routes>
+        <Route path="/" element={<TaskOperationMain />} />
+        <Route path = '/taskedit' element={<TaskOperationMain />} />
+        <Route path = '/taskedit/:id' element={<TaskOperationMain />} />
+        <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
+      </Routes>
      </>
   );
 }
