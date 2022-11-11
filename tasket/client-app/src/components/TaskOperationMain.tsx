@@ -23,15 +23,16 @@ export const TaskOperationMain = () => {
     const [selectedId_task, setSelectedId_task] = useState("");
 
     return (
-        <div>
+        <div className="mx-5">
             
-            <Button variant="primary" onClick={()=>{setIsModeAddnew(true); setSelectedId_task("")}}>Add New Task</Button>
 
             <Row>
-                <Col>
+                <Col className="m-2 my-3 p-4 bg-white rounded shadow-sm">
+                    <h3 id="tabelLabel">Task List</h3>
+                    <Button className="shadow-sm float-end" variant="primary" onClick={()=>{setIsModeAddnew(true); setSelectedId_task("")}}>Add New Task</Button>
                     <TaskList setIsModeAddnew={setIsModeAddnew} selectedId_task={selectedId_task} setSelectedId_task={setSelectedId_task}/>
                 </Col>
-                <Col>
+                <Col className="m-2 my-3 p-4 bg-white rounded shadow-sm">
                     {
                         (isModeAddnew || selectedId_task !== "") &&
                             <TaskEdit isModeAddnew={isModeAddnew} id_task={selectedId_task} setSelectedId_task={setSelectedId_task} />

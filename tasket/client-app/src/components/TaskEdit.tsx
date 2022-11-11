@@ -91,30 +91,28 @@ export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => 
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <Form className="ui form" onSubmit = {handleSubmit} autoComplete='off'>
 
-                        <Row>
+                        <Row className="my-4">
                             <Col><TextInputGeneral label='Title' name='title' placeholder='Title' /></Col>
                         </Row>
 
-                        <hr />
                         
-                        <Row>
+                        <Row className="my-4">
                             <Col ><TextAreaGeneral label='Description' placeholder='Description' name='description' rows={3}   /></Col>
                         </Row>
                         
-                        <Row>
-                            <Col ><DateInputGeneral placeholderText='Due Date' name = 'end_date_scheduled' dateFormat='MM d, yyyy' /></Col>
-                            <Col ><DateInputGeneral placeholderText='Completion Date' name = 'end_date_actual' dateFormat='MM d, yyyy' /></Col>
+                        <Row className="my-4">
+                            <Col ><DateInputGeneral title="Due Date" placeholderText='Due Date' name = 'end_date_scheduled' dateFormat='MM d, yyyy' /></Col>
+                            <Col ><DateInputGeneral title="Completion Date" placeholderText='Completion Date' name = 'end_date_actual' dateFormat='MM d, yyyy' /></Col>
                         </Row>
 
 
                         
-                        <Row>
+                        <Row className="my-4">
                             <Col xs={4}><CheckBoxGeneral label='Finished' name='is_finish'  /></Col>
                         </Row>
                         
                         <hr />
-                        
-                        <button disabled={!isValid || !dirty || isSubmitting} type = 'submit' className='btn btn-primary'>
+                        <button disabled={!isValid || !dirty || isSubmitting} type = 'submit' className='btn btn-primary float-end'>
                             {isSubmitting ? "Processing" : "submit"}
                         </button>
                     </Form>
@@ -130,7 +128,7 @@ export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => 
                 onSubmit={values => deleteTask(values)}>
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <Form className="ui form" onSubmit = {handleSubmit} autoComplete='off'>                        
-                        <button disabled={!isValid || isSubmitting} type = 'submit' className='btn btn-danger'>
+                        <button disabled={!isValid || isSubmitting} type = 'submit' className='btn btn-danger float-end'>
                             {isSubmitting ? "Processing" : "Delete"}
                         </button>
                     </Form>

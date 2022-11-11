@@ -22,7 +22,7 @@ const Login = (
     const navigate = useNavigate();
     
     return (
-        <>
+        <div className='form-signin text-center'>
 
         <Formik
             initialValues={{email:'', password: '', error: null}}
@@ -51,11 +51,11 @@ const Login = (
                                 <Form.Label style = {{marginBottom:10}} basic color='red' >{errors.error}</Form.Label>
                         }
                         />
-                        <button disabled={!isValid || isSubmitting} type = 'submit' className="btn btn-primary">Login</button>
+                        <button disabled={!isValid || isSubmitting} type = 'submit' className="btn btn-lg btn-primary w-100">Login</button>
                     </Form>
                 )}
             </Formik>
-        </>
+        </div>
     );
 
 }
