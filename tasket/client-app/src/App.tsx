@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import './signin.css';
 import api from './app/api/api';
 import { UserInfo } from './app/models/Account';
 import Login from './components/Login';
@@ -15,7 +16,12 @@ function App() {
   const [userInfo, setUserInfo] = useState<UserInfo>({username: '',email: '',token: ''});
   const [isFirstLoginChecked, setIsFirstLoginChecked] = useState(false);
   
+
   useEffect(() => {
+    // add class to body element
+    document.body.classList.add('bg-light');
+
+
     const token = window.localStorage.getItem('tasket_jwt_token');
     try{
       api.Account.current().then(user => {
@@ -36,14 +42,16 @@ function App() {
   return (
     <>
       <NavBar userInfo={userInfo} setUserInfo={setUserInfo} />
+      <main>
       <Routes>
-        <Route path = '/' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
-        <Route path = '/task' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
-        <Route path = '/task/:id' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
-        <Route path = '/taskcreate' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
-        <Route path = '/login' element={<Login setUserInfo={setUserInfo} />} />
-        <Route path = '/register' element={<Register />} />
+          <Route path = '/' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
+          <Route path = '/task' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
+          <Route path = '/task/:id' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
+          <Route path = '/taskcreate' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
+          <Route path = '/login' element={<Login setUserInfo={setUserInfo} />} />
+          <Route path = '/register' element={<Register />} />
       </Routes>
+      </main>
      </>
   );
 }

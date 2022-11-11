@@ -7,7 +7,8 @@ export default function DateInputGeneral(props: Partial<ReactDatePickerProps>){
     const[field, meta, helpers] = useField(props.name!);
     return (
         <Form.Group>
-            <DatePicker
+            { props.title && <Form.Label>{props.title}</Form.Label> }
+            <DatePicker className="form-control"
                 {...field}
                 {...props}
                 selected={(field.value && new Date(field.value)) || null}

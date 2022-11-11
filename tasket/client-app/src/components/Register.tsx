@@ -8,7 +8,7 @@ import api from '../app/api/api';
 const Register = () => {
     
     return (
-        <>
+        <div className='form-signin text-center'>
         <Formik
             initialValues={{username: '', email:'', password: '', error: null}}
             onSubmit={(values, {setErrors}) => 
@@ -35,7 +35,7 @@ const Register = () => {
                     </Form>
                 )}
             </Formik>
-        </>
+        </div>
     );
 
 }
