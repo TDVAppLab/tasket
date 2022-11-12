@@ -3,22 +3,21 @@ import { Button, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../app/api/api';
 import { Task } from '../app/models/Task';
+import { useTaskContext } from '../app/store/TaskContext';
 
 
 
-interface Props {
-  selectedId_task: string;
-  setIsModeAddnew: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedId_task: React.Dispatch<React.SetStateAction<string>>;
-}
 
 
-export const TaskList = ({setIsModeAddnew, selectedId_task, setSelectedId_task}: Props) => {
+
+export const TaskList = () => {
   
     const navigate = useNavigate();
     
     const [loading, setLoading] = useState(true);
     const [tasks, setTasks] = useState<Task[]>();
+
+    const taskStore = useTaskContext();    
   
     useEffect(() => {
         populateWeatherData();
@@ -46,10 +45,10 @@ export const TaskList = ({setIsModeAddnew, selectedId_task, setSelectedId_task}:
               <tbody>
                 {tasks && tasks.map((task, index) => (
                   <tr 
-                    key={task.id_task} onClick={()=>{setIsModeAddnew(false); setSelectedId_task(task.id_task);
+                    key={task.id_task} onClick={()=>{taskStore.setIsModeAddnew(false); taskStore.setSelectedTask(task);
                       navigate(`/task/${task.id_task}`);
                     }}  
-                    className={ selectedId_task === task.id_task ? "table-info" :  ""}                  
+                    className={ taskStore.selectedTask?.id_task === task.id_task ? "table-info" :  ""}                  
                   >
                     <td>{index+1}</td>
                     <td><input type="checkbox" defaultChecked={task.is_finish} disabled /></td>
