@@ -38,7 +38,7 @@ export const TaskOperationMain = () => {
                 </Col>
                 <Col className="m-2 my-3 p-4 bg-white rounded shadow-sm">
                     {
-                        (taskStore.isModeAddnew || taskStore.selectedTask?.id_task !== "") &&
+                        (taskStore.isModeAddnew || taskStore.selectedTask !== null) &&
                             <TaskEdit />
                     }
                 </Col>

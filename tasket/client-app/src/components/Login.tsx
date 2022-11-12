@@ -1,7 +1,7 @@
 import { ErrorMessage,  Formik } from 'formik';
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import api from '../app/api/api';
 import TextInputGeneral from '../app/common/TextInputGeneral';
@@ -49,6 +49,7 @@ const Login = () =>
                     </Form>
                 )}
             </Formik>
+            <Link to='/register' >register</Link>
         </div>
     );
 

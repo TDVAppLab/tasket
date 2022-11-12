@@ -10,6 +10,7 @@ import {v4} from 'uuid';
 import api from "../app/api/api";
 import { Task } from "../app/models/Task";
 import { useTaskContext } from "../app/store/TaskContext";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -20,6 +21,7 @@ export const TaskEdit = () => {
     const [task, setTask] = useState<Task>();
     
     const taskStore = useTaskContext();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(taskStore.selectedTask){
@@ -44,6 +46,7 @@ export const TaskEdit = () => {
             newTask.id_task=v4();
             const data = await api.Tasks.create(newTask);
             setTask(data);
+            navigate(`/task/${data.id_task}`);
 
         } else {
             const data = await api.Tasks.update(value);
@@ -57,6 +60,7 @@ export const TaskEdit = () => {
         if(value.id_task!==""){
             const data = await api.Tasks.delete(value.id_task);
             taskStore.setSelectedTask(null);
+            navigate(`/task`);
         }
     };
     

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuthUserContext } from './app/store/AuthUserContext';
 
 
@@ -23,19 +23,19 @@ export const NavBar = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link >Tasks</Nav.Link>
+                        <Nav.Link as={NavLink} to="/task">Tasks</Nav.Link>
                     </Nav>
                     <Nav>
                         <Nav.Link >PrivacyPolicy</Nav.Link>                        
                         {
                             authUser.user?.username ?
                                 <NavDropdown title={authUser.user.username} id="collasible-nav-dropdown-user">
-                                    <NavDropdown.Item >register</NavDropdown.Item>  
+                                    <NavDropdown.Item as={NavLink} to="/register">register</NavDropdown.Item>  
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item onClick={logout} >Logout</NavDropdown.Item>
                                 </NavDropdown>       
                                 :
-                                <Nav.Link>Login</Nav.Link>
+                                <Nav.Link as={NavLink} to="/task">Login</Nav.Link>
                         }
                     </Nav>
                 </Navbar.Collapse>
