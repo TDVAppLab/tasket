@@ -4,7 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 
-
+# Sqlite DB
+tasket/server-app/database.db
 
 # wwwroot
 wwwroot/
@@ -355,3 +356,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+tasket/server-app/database.db
