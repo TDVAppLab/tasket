@@ -6,19 +6,13 @@ import * as Yup from 'yup';
 import api from '../app/api/api';
 import TextInputGeneral from '../app/common/TextInputGeneral';
 import { UserInfo } from '../app/models/Account';
+import { useAuthUserContext } from '../app/store/AuthUserContext';
 
 
 
-interface Props {
-    setUserInfo: React.Dispatch<React.SetStateAction<UserInfo>>;
-}
-
-
-const Login = (
-    {setUserInfo}: Props
-    ) => 
+const Login = () => 
 {
-    
+    const authUser = useAuthUserContext();    
     const navigate = useNavigate();
     
     return (
@@ -31,7 +25,7 @@ const Login = (
                     setErrors({error:'Invalid email or password'}));
                     if(content){
                         window.localStorage.setItem('tasket_jwt_token', content.token);
-                        setUserInfo(content);
+                        authUser.signin(content);
                         navigate(`/task`);
                     }
                 }

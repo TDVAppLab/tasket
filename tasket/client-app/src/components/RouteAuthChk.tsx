@@ -1,16 +1,17 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { UserInfo } from "../app/models/Account";
+import { useAuthUserContext } from "../app/store/AuthUserContext";
 
 interface Props {
-    userInfo: UserInfo;
     component: React.ReactNode;
     redirect: string
   }  
   
-export const RouteAuthChk = ({userInfo, component, redirect}: Props) => {
+export const RouteAuthChk = ({component, redirect}: Props) => {
     
-  if (!userInfo.username) {
+  const authUser = useAuthUserContext();    
+  
+  if (!authUser.user?.username) {
     return <Navigate to={redirect} replace={false} />
   }
 

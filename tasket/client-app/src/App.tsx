@@ -9,11 +9,12 @@ import Register  from './components/Register';
 import { RouteAuthChk } from './components/RouteAuthChk';
 import { TaskOperationMain } from './components/TaskOperationMain';
 import { NavBar } from './NavBar';
+import { useAuthUserContext } from './app/store/AuthUserContext';
 
 function App() {
 
+  const authUser = useAuthUserContext();    
   
-  const [userInfo, setUserInfo] = useState<UserInfo>({username: '',email: '',token: ''});
   const [isFirstLoginChecked, setIsFirstLoginChecked] = useState(false);
   
 
@@ -26,7 +27,7 @@ function App() {
     try{
       api.Account.current().then(user => {
         window.localStorage.setItem('tasket_jwt_token', user.token);
-        setUserInfo(user);
+        authUser.signin(user);
         setIsFirstLoginChecked(true);
       }).catch(x=>setIsFirstLoginChecked(true))
       
@@ -41,14 +42,14 @@ function App() {
   
   return (
     <>
-      <NavBar userInfo={userInfo} setUserInfo={setUserInfo} />
+      <NavBar />
       <main>
       <Routes>
-          <Route path = '/' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
-          <Route path = '/task' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
-          <Route path = '/task/:id' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
-          <Route path = '/taskcreate' element={ <RouteAuthChk userInfo={userInfo} component={<TaskOperationMain />} redirect="/login" /> } />
-          <Route path = '/login' element={<Login setUserInfo={setUserInfo} />} />
+          <Route path = '/' element={ <RouteAuthChk component={<TaskOperationMain />} redirect="/login" /> } />
+          <Route path = '/task' element={ <RouteAuthChk component={<TaskOperationMain />} redirect="/login" /> } />
+          <Route path = '/task/:id' element={ <RouteAuthChk component={<TaskOperationMain />} redirect="/login" /> } />
+          <Route path = '/taskcreate' element={ <RouteAuthChk component={<TaskOperationMain />} redirect="/login" /> } />
+          <Route path = '/login' element={<Login />} />
           <Route path = '/register' element={<Register />} />
       </Routes>
       </main>
