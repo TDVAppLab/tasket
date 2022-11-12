@@ -6,18 +6,18 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthUserProvider } from './app/store/AuthUserContext';
+import { Providers } from './app/store/providers';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <AuthUserProvider>
+    <Providers>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </AuthUserProvider>
+    </Providers>
   </React.StrictMode>
 );
 

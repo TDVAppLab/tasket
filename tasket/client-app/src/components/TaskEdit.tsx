@@ -9,30 +9,31 @@ import TextInputGeneral from "../app/common/TextInputGeneral";
 import {v4} from 'uuid';
 import api from "../app/api/api";
 import { Task } from "../app/models/Task";
+import { useTaskContext } from "../app/store/TaskContext";
 
 
 
-interface Props {
-    isModeAddnew: boolean;
-    id_task: string;
-    setSelectedId_task: React.Dispatch<React.SetStateAction<string>>;
-}
 
-export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => {    
+
+export const TaskEdit = () => {    
     
     const [task, setTask] = useState<Task>();
+    
+    const taskStore = useTaskContext();
 
     useEffect(() => {
-        if(id_task !== ""){
+        if(taskStore.selectedTask){
             loadTaskDetails();
         } else {
             setTask({id_task : "", title : "", is_finish: false, description:"", end_date_scheduled : null, end_date_actual : null})
         }
-    }, [id_task]);
+    }, [taskStore.selectedTask]);
   
     const loadTaskDetails = async () => {
-        const data = await api.Tasks.details(id_task);
-        setTask(data);
+        if(taskStore.selectedTask) {
+            const data = await api.Tasks.details(taskStore.selectedTask.id_task);
+            setTask(data);
+        }
     };
 
 
@@ -55,7 +56,7 @@ export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => 
 
         if(value.id_task!==""){
             const data = await api.Tasks.delete(value.id_task);
-            setSelectedId_task("");
+            taskStore.setSelectedTask(null);
         }
     };
     
@@ -76,7 +77,7 @@ export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => 
     return (
         <div>
             {
-                isModeAddnew ?
+                taskStore.isModeAddnew ?
                     <h3>Add New Task</h3>
                     :
                     <h3>Task Detail : {task?.title}</h3>
@@ -120,7 +121,7 @@ export const TaskEdit = ({isModeAddnew, id_task, setSelectedId_task}: Props) => 
 
                 </Formik>
                 {
-                !isModeAddnew &&
+                !taskStore.isModeAddnew &&
                 <Formik
                 validationSchema={validationSchemaDel}
                 enableReinitialize 
