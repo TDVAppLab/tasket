@@ -2,6 +2,7 @@ import { ErrorMessage,  Formik } from 'formik';
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import api from '../app/api/api';
 import TextInputGeneral from '../app/common/TextInputGeneral';
@@ -26,6 +27,7 @@ const Login = () =>
                     if(content){
                         window.localStorage.setItem('tasket_jwt_token', content.token);
                         authUser.signin(content);
+                        toast.success('successfully logged in');
                         navigate(`/task`);
                     }
                 }

@@ -11,6 +11,7 @@ import { TaskOperationMain } from './components/TaskOperationMain';
 import { NavBar } from './NavBar';
 import { useAuthUserContext } from './app/store/AuthUserContext';
 import Notfound from './components/Notfound';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
   
   return (
     <>
+      <ToastContainer position ='bottom-right' hideProgressBar />
       <NavBar />
       <main>
       <Routes>

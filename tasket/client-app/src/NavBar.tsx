@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuthUserContext } from './app/store/AuthUserContext';
 
 
@@ -13,6 +14,7 @@ export const NavBar = () => {
     function logout(){
         window.localStorage.removeItem('tasket_jwt_token');
         authUser.signout();
+        toast.success('successfully logged out');
         navigate(`/`);
     }
 

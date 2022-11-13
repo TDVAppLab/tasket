@@ -10,6 +10,7 @@ import {v4} from 'uuid';
 import { Task } from "../app/models/Task";
 import { useTaskContext } from "../app/store/TaskContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 
@@ -37,10 +38,13 @@ export const TaskEdit = () => {
             const newTask = value;
             newTask.id_task=v4();
             
-            taskStore.createTask(value).then(result => navigate(`/task/${result?.id_task}`));
+            taskStore.createTask(value).then(result => {
+                toast.info('task created');
+                navigate(`/task/${result?.id_task}`);
+            });
 
         } else {
-            taskStore.updateTask(value);
+            taskStore.updateTask(value).then(result => toast.info('task updated'));
         }
     };
 
@@ -52,6 +56,7 @@ export const TaskEdit = () => {
                 taskStore.deleteTask(value);
                 taskStore.setSelectedTaskbyID(null);
                 navigate(`/task`);
+                toast.info('task deleted');
             } catch {
 
             }
