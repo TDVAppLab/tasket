@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import { Task } from "../models/Task";
 
@@ -28,6 +29,7 @@ export const TaskProvider = (props:Props) => {
   const [selectedTask, setSelectedTask] = React.useState<Task | null>(null);
   const [isModeAddnew, setIsModeAddnew] = React.useState(false);
 
+  const navigate = useNavigate();
   
   const loadTaskList = async () => {
     
@@ -43,10 +45,14 @@ export const TaskProvider = (props:Props) => {
 
   const setSelectedTaskbyID = async (id:string | null) => {
     if(id) {
-        const data = await api.Tasks.details(id);
-        if(data){
-          setSelectedTask(data);
-          return data;
+        try {
+          const data = await api.Tasks.details(id);
+          if(data){
+            setSelectedTask(data);
+            return data;
+          }
+        }catch {
+          navigate(`/notfound`);
         }
     } else {
       setSelectedTask(null);

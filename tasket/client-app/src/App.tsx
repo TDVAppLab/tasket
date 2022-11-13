@@ -10,6 +10,7 @@ import { RouteAuthChk } from './components/RouteAuthChk';
 import { TaskOperationMain } from './components/TaskOperationMain';
 import { NavBar } from './NavBar';
 import { useAuthUserContext } from './app/store/AuthUserContext';
+import Notfound from './components/Notfound';
 
 function App() {
 
@@ -51,6 +52,8 @@ function App() {
           <Route path = '/taskcreate' element={ <RouteAuthChk component={<TaskOperationMain />} redirect="/login" /> } />
           <Route path = '/login' element={<Login />} />
           <Route path = '/register' element={<Register />} />
+          <Route path = '/notfound' element={<Notfound />} />
+          <Route path = '*' element={<Notfound />} />
       </Routes>
       </main>
      </>
