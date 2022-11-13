@@ -13,23 +13,9 @@ import { useTaskContext } from '../app/store/TaskContext';
 export const TaskList = () => {
   
     const navigate = useNavigate();
-    
-    const [loading, setLoading] = useState(true);
-    const [tasks, setTasks] = useState<Task[]>();
 
     const taskStore = useTaskContext();    
   
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
-  
-    const populateWeatherData = async () => {
-        const data = await api.Tasks.index();
-        setTasks(data);
-        setLoading(false);
-    };
-    
-    if(loading) return <div>loading....</div>
 
     return (
         <div>
@@ -43,7 +29,7 @@ export const TaskList = () => {
                 </tr>
               </thead>
               <tbody>
-                {tasks && tasks.map((task, index) => (
+                {taskStore.taskList && taskStore.taskList.map((task, index) => (
                   <tr 
                     key={task.id_task} onClick={()=>{taskStore.setIsModeAddnew(false); taskStore.setSelectedTaskbyID(task.id_task);
                       navigate(`/task/${task.id_task}`);

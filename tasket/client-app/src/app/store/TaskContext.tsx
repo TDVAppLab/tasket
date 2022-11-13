@@ -3,6 +3,8 @@ import api from "../api/api";
 import { Task } from "../models/Task";
 
 export type TaskContextType = {
+  taskList: Task[];
+  loadTaskList: () => void;
   selectedTask: Task | null;
   setSelectedTaskbyID: (id:string | null) => Promise<Task | undefined>;
   updateTask: (task:Task) => Promise<Task | undefined>;
@@ -22,10 +24,23 @@ type Props = {
 }
 
 export const TaskProvider = (props:Props) => {
+  const [taskList, setTaskList] = React.useState<Task[]>([]);
   const [selectedTask, setSelectedTask] = React.useState<Task | null>(null);
   const [isModeAddnew, setIsModeAddnew] = React.useState(false);
 
   
+  const loadTaskList = async () => {
+    
+    try {
+        const objects = await api.Tasks.index();
+        setTaskList(objects);
+        
+    } catch (error) {
+        setTaskList([]);
+        console.log(error);
+    }
+  }
+
   const setSelectedTaskbyID = async (id:string | null) => {
     if(id) {
         const data = await api.Tasks.details(id);
@@ -44,6 +59,7 @@ export const TaskProvider = (props:Props) => {
       const data = await api.Tasks.update(task);
       if(data){
         setSelectedTask(data);
+        loadTaskList();
         return data;
       }
     }    
@@ -63,10 +79,11 @@ export const TaskProvider = (props:Props) => {
   const deleteTask = async (task:Task) => {
     if(task) {
       const data = await api.Tasks.delete(task.id_task);
+      loadTaskList();
     }
   };
 
-  const value:TaskContextType = { selectedTask, setSelectedTaskbyID, updateTask, createTask, deleteTask, isModeAddnew, setIsModeAddnew };
+  const value:TaskContextType = { taskList, loadTaskList, selectedTask, setSelectedTaskbyID, updateTask, createTask, deleteTask, isModeAddnew, setIsModeAddnew };
   
   return (
     <TaskContext.Provider value={value}>

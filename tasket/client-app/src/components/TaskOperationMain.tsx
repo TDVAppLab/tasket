@@ -17,6 +17,7 @@ export const TaskOperationMain = () => {
     
     useEffect(()=> {
 
+        taskStore.loadTaskList();
         if(id) {
             taskStore.setSelectedTaskbyID(id);
         } else {
