@@ -45,7 +45,7 @@ export const TaskList = () => {
               <tbody>
                 {tasks && tasks.map((task, index) => (
                   <tr 
-                    key={task.id_task} onClick={()=>{taskStore.setIsModeAddnew(false); taskStore.setSelectedTask(task);
+                    key={task.id_task} onClick={()=>{taskStore.setIsModeAddnew(false); taskStore.setSelectedTaskbyID(task.id_task);
                       navigate(`/task/${task.id_task}`);
                     }}  
                     className={ taskStore.selectedTask?.id_task === task.id_task ? "table-info" :  ""}                  

@@ -7,7 +7,6 @@ import DateInputGeneral from "../app/common/DateInputGeneral";
 import TextAreaGeneral from "../app/common/TextAreaGeneral";
 import TextInputGeneral from "../app/common/TextInputGeneral";
 import {v4} from 'uuid';
-import api from "../app/api/api";
 import { Task } from "../app/models/Task";
 import { useTaskContext } from "../app/store/TaskContext";
 import { useNavigate } from "react-router-dom";
@@ -25,18 +24,11 @@ export const TaskEdit = () => {
 
     useEffect(() => {
         if(taskStore.selectedTask){
-            loadTaskDetails();
+            setTask(taskStore.selectedTask);
         } else {
             setTask({id_task : "", title : "", is_finish: false, description:"", end_date_scheduled : null, end_date_actual : null})
         }
     }, [taskStore.selectedTask]);
-  
-    const loadTaskDetails = async () => {
-        if(taskStore.selectedTask) {
-            const data = await api.Tasks.details(taskStore.selectedTask.id_task);
-            setTask(data);
-        }
-    };
 
 
     const updateTaskDetails = async (value : Task) => {
@@ -44,13 +36,11 @@ export const TaskEdit = () => {
         if(value.id_task===""){
             const newTask = value;
             newTask.id_task=v4();
-            const data = await api.Tasks.create(newTask);
-            setTask(data);
-            navigate(`/task/${data.id_task}`);
+            
+            taskStore.createTask(value).then(result => navigate(`/task/${result?.id_task}`));
 
         } else {
-            const data = await api.Tasks.update(value);
-            setTask(data);
+            taskStore.updateTask(value);
         }
     };
 
@@ -58,9 +48,14 @@ export const TaskEdit = () => {
     const deleteTask = async (value : Task) => {
 
         if(value.id_task!==""){
-            const data = await api.Tasks.delete(value.id_task);
-            taskStore.setSelectedTask(null);
-            navigate(`/task`);
+            try {
+                taskStore.deleteTask(value);
+                taskStore.setSelectedTaskbyID(null);
+                navigate(`/task`);
+            } catch {
+
+            }
+        
         }
     };
     

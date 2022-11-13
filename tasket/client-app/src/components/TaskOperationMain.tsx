@@ -18,9 +18,9 @@ export const TaskOperationMain = () => {
     useEffect(()=> {
 
         if(id) {
-            taskStore.setSelectedTask({id_task : id, title : "", is_finish: false, description:"", end_date_scheduled : null, end_date_actual : null});
+            taskStore.setSelectedTaskbyID(id);
         } else {
-            taskStore.setSelectedTask(null);
+            taskStore.setSelectedTaskbyID(null);
         }
 
     }, [id])
@@ -33,7 +33,7 @@ export const TaskOperationMain = () => {
             <Row>
                 <Col className="m-2 my-3 p-4 bg-white rounded shadow-sm">
                     <h3 id="tabelLabel">Task List</h3>
-                    <Button className="shadow-sm float-end" variant="primary" onClick={()=>{taskStore.setIsModeAddnew(true); taskStore.setSelectedTask(null); navigate(`/taskcreate`);} }>Add New Task</Button>
+                    <Button className="shadow-sm float-end" variant="primary" onClick={()=>{taskStore.setIsModeAddnew(true); taskStore.setSelectedTaskbyID(null); navigate(`/taskcreate`);} }>Add New Task</Button>
                     <TaskList />
                 </Col>
                 <Col className="m-2 my-3 p-4 bg-white rounded shadow-sm">
