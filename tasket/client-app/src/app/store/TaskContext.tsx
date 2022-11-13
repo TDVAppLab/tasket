@@ -50,6 +50,8 @@ export const TaskProvider = (props:Props) => {
           if(data){
             setSelectedTask(data);
             return data;
+          } else {
+            navigate(`/notfound`);
           }
         }catch {
           navigate(`/notfound`);
