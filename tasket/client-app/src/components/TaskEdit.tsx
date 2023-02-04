@@ -1,6 +1,6 @@
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Tab, Tabs } from "react-bootstrap";
 import * as Yup from 'yup';
 import CheckBoxGeneral from "../app/common/CheckBoxGeneral";
 import DateInputGeneral from "../app/common/DateInputGeneral";
@@ -11,6 +11,7 @@ import { Task } from "../app/models/Task";
 import { useTaskContext } from "../app/store/TaskContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import PreviewDescription from "./PreviewDescription";
 
 
 
@@ -102,7 +103,20 @@ export const TaskEdit = () => {
 
                         
                         <Row className="my-4">
-                            <Col ><TextAreaGeneral label='Description' placeholder='Description' name='description' rows={3}   /></Col>
+                            <Col >
+                                <Tabs defaultActiveKey={"editor"} id="article-editor-main-tab" className="mb-3">                                
+
+                                    <Tab eventKey="editor" title="Editor">
+                                        <TextAreaGeneral label='Description' placeholder='Description' name='description' rows={3}   />
+                                    </Tab>
+                                    
+                                    <Tab eventKey="preview" title="Preview">
+                                        <PreviewDescription />
+                                    </Tab>
+                                    
+                                </Tabs>
+                            </Col>
+
                         </Row>
                         
                         <Row className="my-4">
