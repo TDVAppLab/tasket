@@ -37,7 +37,7 @@ export const TaskList = () => {
                     className={ taskStore.selectedTask?.id_task === task.id_task ? "table-info" :  ""}                  
                   >
                     <td>{index+1}</td>
-                    <td><input type="checkbox" defaultChecked={task.is_finish} disabled /></td>
+                    <td><input type="checkbox" checked={task.is_finish} disabled /></td>
                     <td>{task.title}</td>
                     <td>{task.end_date_scheduled && (new Date(task.end_date_scheduled).toDateString())}</td>
                   </tr>
